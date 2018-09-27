@@ -3,15 +3,15 @@ import Graph
 
 class Test(unittest.TestCase):
 
-    #ga1 = Graph.GraphAlgorithms('graph-1.txt')
-    #ga2 = Graph.GraphAlgorithms('graph-2.txt')
-    #ga3 = Graph.GraphAlgorithms('graph-3.txt')
-    #ga4 = Graph.GraphAlgorithms('graph-4.txt')
+    ga1 = Graph.GraphAlgorithms('graph-1.txt')
+    ga2 = Graph.GraphAlgorithms('graph-2.txt')
+    ga3 = Graph.GraphAlgorithms('graph-3.txt')
+    ga4 = Graph.GraphAlgorithms('graph-4.txt')
 
-    ga1 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-1.txt")
-    ga2 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-2.txt")
-    ga3 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-3.txt")
-    ga4 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-4.txt")
+    #ga1 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-1.txt")
+    #ga2 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-2.txt")
+    #ga3 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-3.txt")
+    #ga4 = Graph.GraphAlgorithms("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab5/graph-4.txt")
 
     def testDFS_recursive(self):
         self.assertEqual('abefcgdhij',      self.ga1.DFS('recursive'))
@@ -37,8 +37,6 @@ class Test(unittest.TestCase):
         self.assertTrue(self.ga3.hasCycle())
         self.assertFalse(self.ga4.hasCycle())
         
-
-
     def testshortestpath(self):
         self.assertEqual(2, self.ga1.shortestpath('a','f'))
         self.assertEqual(1, self.ga1.shortestpath('a','i'))
