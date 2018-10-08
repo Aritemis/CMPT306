@@ -10,31 +10,22 @@ import sys
 
 def permutate(value):
     result = []
-    first = []
-    second = []
     if value > 0:
-        for i in range(1, value):
-            first.append(i)
-            second.insert(0,i)
-        for j in range(0, value):
-            current = first.copy()
-            current.insert((value - 1 - j), value)
-            if tuple(current) not in result:
-                result.append(tuple(current))
-        for k in range(0, value):
-            current = second.copy()
-            current.insert(k, value)
-            if tuple(current) not in result:
-                result.append(tuple(current))
-
-        
-          
+        if value == 1:
+            result.append((1,))
+        else:
+            previous = permutate(value - 1)
+            end = len(previous)
+            for i in range(0, end):
+                current = previous[i]
+                print("current " + str(current))
+                if i % 2 == 0:
+                    for j in range(0, len(current) + 1):
+                        result.append(current[:(len(current) - j)] + (value,) + current[(len(current) - j):])
+                else:
+                    for k in range(0, value):
+                        result.append(current[:(k)] + (value,) + current[(k):])
     return result
-
-
-
-
-
 
 if __name__ == "__main__":
 
