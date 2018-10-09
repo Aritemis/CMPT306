@@ -10,11 +10,11 @@ class TopologicalSorting:
     The adjacency list is a dictionary that maps
     a vertex to its adjacent vertices.
     '''
-    def __init__(self, fileName): 
+    def __init__(self, fileName, newLine): 
         # file name
         self.name = fileName
         
-        graphFile = open(fileName)
+        graphFile = open(fileName, newline = newLine)
 
         '''
         create an initially empty dictionary representing
@@ -70,8 +70,8 @@ class TopologicalSorting:
         self.sortedList = []
 
     def p_a_s(self, file):
-        print(self.vertices)
-        print(self.adjacencyList)
+        #print(self.vertices)
+        #print(self.adjacencyList)
         self.sort()
         print(self.sortedList)
 
@@ -115,17 +115,18 @@ class TopologicalSorting:
 
 if __name__ == "__main__":
 
-    #s = TopologicalSorting("graph-example.txt")
-    #s.print_and_save()
-    #s = TopologicalSorting("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-example.txt")
+    s = TopologicalSorting("graph-example.txt", None)
+    s.print_and_save()
+    #s = TopologicalSorting("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-example.txt", None)
     #s.p_a_s("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-example-results.txt")
 
-    #s = TopologicalSorting("graph-courses.txt")
-    s = TopologicalSorting("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-courses.txt")
-    s.p_a_s("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-courses-results.txt")
-    #s.print_and_save()
+    s = TopologicalSorting("graph-courses.txt", '\r\n')
+    s.print_and_save()
+    #s = TopologicalSorting("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-courses.txt", '\r\n')
+    #s.p_a_s("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-courses-results.txt")
 
-    #s = TopologicalSorting("graph-spider.txt")
-    #s = TopologicalSorting("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-spider.txt")
-    #s.print_and_save()
+    s = TopologicalSorting("graph-spider.txt", None)
+    s.print_and_save()
+    #s = TopologicalSorting("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-spider.txt", None)
+    #s.p_a_s("c:/Users/My LENOVO/Desktop/other workspace/CMPT306/Lab7/graph-spider-results.txt")
     print("Done")
