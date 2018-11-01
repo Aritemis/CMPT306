@@ -40,9 +40,12 @@ class AVLTree():
         # you can use something like:
         #           root.set_balance_factor( calculate the balance factor )
         
-        rootBalance = ( self.get_height(root.get_right()) - self.get_height(root.get_left()) )
-        root.set_balance_factor(rootBalance)
-        
+        #rootBalance = ( self.get_height(root.get_right()) - self.get_height(root.get_left()) )
+        #root.set_balance_factor(rootBalance)
+
+        root.set_balance_factor(self.get_height(root.get_left()) - self.get_height(root.get_right()))
+        rootBalance = root.get_balance_factor()
+
         # balance current subtree if root.get_balance_factor() is greater than 1 or less than -1
         # you can use these library functions:
         #           node.get_key()
@@ -55,6 +58,8 @@ class AVLTree():
         nodeBalance = node.get_balance_factor()
         leftBalance = 0
         rightBalance = 0
+
+        print(rootBalance)
 
         if root.get_left() is not None:
             leftBalance = root.get_left().get_balance_factor()
@@ -81,28 +86,32 @@ class AVLTree():
     def left_rotation(self, root):
         temp = root
         root = root.get_right()
-        oldLeft = root.get_left()
+        oldLeft = None
+        if root.get_left() is not None:
+            oldLeft = root.get_left()
         root.set_left(temp)
-        if oldLeft is not None:
-            root.get_left().set_right(oldLeft)
+        root.get_left().set_right(oldLeft)
         return root
 
     # rotate to the right
     def right_rotation(self, root):
         temp = root
         root = temp.get_left()
-        oldRight = root.get_right()
+        oldRight = None
+        if root.get_right() is not None:
+            oldRight = root.get_right()
         root.set_right(temp)
-        if oldRight is not None:
-            root.get_right().set_left(oldRight)
+        root.get_right().set_left(oldRight)
         return root
 
     # return the height at current node
     def get_height(self, node):
         if not node:
+            print("nope")
             return 0
         else:
-            return max(self.get_height(node.get_left()), self.get_height(node.get_right()))
+            print("yez") 
+            return max(self.get_height(node.get_left()), self.get_height(node.get_right())) + 1
         
     # return the root of the tree
     def get_root(self):
