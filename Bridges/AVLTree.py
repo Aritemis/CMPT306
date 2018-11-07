@@ -40,11 +40,8 @@ class AVLTree():
         # you can use something like:
         #           root.set_balance_factor( calculate the balance factor )
         
-        #rootBalance = ( self.get_height(root.get_right()) - self.get_height(root.get_left()) )
-        #root.set_balance_factor(rootBalance)
-
-        root.set_balance_factor(self.get_height(root.get_left()) - self.get_height(root.get_right()))
-        rootBalance = root.get_balance_factor()
+        rootBalance = ( self.get_height(root.get_left()) - self.get_height(root.get_right()) )
+        root.set_balance_factor(rootBalance)
 
         # balance current subtree if root.get_balance_factor() is greater than 1 or less than -1
         # you can use these library functions:
