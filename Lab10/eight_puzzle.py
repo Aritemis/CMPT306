@@ -1,6 +1,7 @@
 import numpy as np
 from heapq import heappush, heappop
 from animation import draw
+import argparse
 
 class Node():
     """
@@ -16,18 +17,18 @@ class Node():
 
 class EightPuzzle():
     
-    def __init__(self, start_state, goal_state, algorithm, array_index):
+    def __init__(self, start_state, goal_state, method, algorithm, array_index):
         self.start_state = start_state
         self.goal_state = goal_state
-        self.visited = [] 
+        self.visited = [] # state
+        self.method = method
         self.algorithm = algorithm
-        self.array_index = array_index
+        self.m, self.n = start_state.shape 
+        self.array_index = array_index   
 
-    # goal test function
     def goal_test(self, current_state):
         return np.array_equal(current_state, self.goal_state)
 
-    # get cost function
     def get_cost(self, current_state, next_state):
         return 1
 
@@ -66,15 +67,35 @@ class EightPuzzle():
         
         return successors
 
-    # get priority of node for UCS
+    def heuristics(self, state):
+        priority = 0
+        if self.method == "Manhattan":
+            for row in range(0,3):
+                for col in range(0,3):
+                    endNumber = self.goal_state[row,col]
+                    currentRow, currentCol = np.where(state == endNumber)
+                    priority += abs(row - currentRow)
+                    priority += abs(col - currentCol)
+        elif self.method == "Hamming":
+            for row in range(0,3):
+                for col in range(0,3):
+                    endNumber = self.goal_state[row,col]
+                    currentRow, currentCol = np.where(state == endNumber)
+                    if row != currentRow or col != currentCol:
+                        priority += 1
+        return priority
+
+    # priority of node 
     def priority(self, node):
-        priority = node.cost_from_start
-        for row in range(0,3):
-            for col in range(0,3):
-                endNumber = self.goal_state[row,col]
-                currentRow, currentCol = np.where(node.state == endNumber)
-                priority += abs(row - currentRow)
-                priority += abs(col - currentCol)
+        priority = 0
+        if self.algorithm == "UCS":
+            self.method = "Manhattan"
+            priority = node.cost_from_start + self.heuristics(node.state)
+        elif self.algorithm == "Greedy":
+            priority = self.heuristics(node.state)
+        elif self.algorithm == "AStar":
+            priority = node.cost_from_start + self.heuristics(node.state)
+
         return priority
     
     # draw 
@@ -84,10 +105,9 @@ class EightPuzzle():
             path.append(node.state)
             node = node.parent
         path.append(self.start_state)
-        print(path)
-        draw(path[::-1], self.array_index, self.algorithm)
 
-    # solve it
+        draw(path[::-1], self.array_index, self.algorithm, self.method)
+            
     def solve(self):
         container = [] 
         count = 1
@@ -103,6 +123,12 @@ class EightPuzzle():
         elif self.algorithm == 'UCS': 
             heappush(container, (count, count, node))
 
+        elif self.algorithm == 'Greedy': 
+            heappush(container, (count, count, node))
+        
+        elif self.algorithm == 'AStar': 
+            heappush(container, (count, count, node))
+
         while container:
             if self.algorithm == 'Depth-Limited-DFS':
                 currentNode = container.pop()
@@ -110,6 +136,10 @@ class EightPuzzle():
                 currentNode = container[0]
                 container.remove(currentNode)            
             elif self.algorithm == 'UCS':
+                currentNode = heappop(container)[2]
+            elif self.algorithm == 'Greedy':
+                currentNode = heappop(container)[2]
+            elif self.algorithm == 'AStar':
                 currentNode = heappop(container)[2]
 
             if self.goal_test(currentNode.state):
@@ -140,19 +170,33 @@ class EightPuzzle():
                     elif self.algorithm == 'UCS': 
                         count += 1
                         heappush(container, (self.priority(nextNode), count, nextNode))
-                    
-            
-            
+
+                    elif self.algorithm == 'Greedy': 
+                        count += 1
+                        heappush(container, (self.priority(nextNode), count, nextNode))
+
+                    elif self.algorithm == 'AStar': 
+                        count += 1
+                        heappush(container, (self.priority(nextNode), count, nextNode))
+
 if __name__ == "__main__":
     
     goal = np.array([[1,2,3],[4,5,6],[7,8,0]])
-
-    start_arrays = [np.array([[0,1,3],[4,2,5],[7,8,6]]), 
-                    np.array([[0,2,3],[1,4,6],[7,5,8]])] 
-
-    algorithms = ['Depth-Limited-DFS', 'BFS', 'UCS']
+    start_arrays = [np.array([[1,2,0],[3,4,6],[7,5,8]]),
+                    np.array([[8,1,3],[4,0,2],[7,6,5]])]
+    methods = ["Hamming", "Manhattan"]
+    algorithms = ['Depth-Limited-DFS', 'BFS', 'UCS', 'Greedy', 'AStar']
     
-    for i in range(len(start_arrays)):
-        for j in range(len(algorithms)):
-            game = EightPuzzle(start_arrays[i], goal, algorithms[j], i )
-            game.solve()
+    parser = argparse.ArgumentParser(description='eight puzzle')
+
+    parser.add_argument('-array', dest='array_index', required = True, type = int, help='index of array')
+    parser.add_argument('-method', dest='method_index', required = True, type = int, help='index of method')
+    parser.add_argument('-algorithm', dest='algorithm_index', required = True, type = int, help='index of algorithm')
+
+    args = parser.parse_args()
+
+    # Example:
+    # Run this in the terminal using array 0, method Hamming, algorithm AStar:
+    #     python eight_puzzle.py -array 0 -method 0 -algorithm 4
+    game = EightPuzzle(start_arrays[args.array_index], goal, methods[args.method_index], algorithms[args.algorithm_index], args.array_index)
+    game.solve()
