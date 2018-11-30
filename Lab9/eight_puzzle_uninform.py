@@ -66,6 +66,25 @@ class EightPuzzle():
         
         return successors
 
+    """ nick's version
+    def get_successors(self, state):
+        successors = []
+        # your code goes here:
+        moves = [[1, -1, 0, 0],[0, 0, -1, 1]]
+
+        x,y = np.where(state == 0)
+        
+        for i in range(0, 4):
+            candidate_x = x[0] + moves[0][i]
+            candidate_y = y[0] + moves[1][i]
+            if (candidate_x >= 0 and candidate_x < 3 and candidate_y >= 0 and candidate_y < 3):
+                temp = state.copy()
+                temp[candidate_x][candidate_y] = state[x[0],y[0]]
+                temp[x[0]][y[0]] = state[candidate_x][candidate_y]
+                successors.append(temp)
+        return successors
+    """
+
     # get priority of node for UCS
     def priority(self, node):
         priority = node.cost_from_start
