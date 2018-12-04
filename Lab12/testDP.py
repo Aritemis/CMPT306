@@ -11,12 +11,12 @@ class Test(unittest.TestCase):
         n = 10
         self.assertEqual(2, change_making(d, n))
 
-        d=[1,2,4,6,8,10,22,23]
-        n=40
+        d = [1,2,4,6,8,10,22,23]
+        n = 40
         self.assertEqual(3, change_making(d, n))
 
-        d=[1,2,10,11,12,15,19,30]
-        n=1900
+        d = [1,2,10,11,12,15,19,30]
+        n = 1900
         self.assertEqual(64, change_making(d, n))
 
 
