@@ -8,28 +8,28 @@ class coin_robot:
         random.seed(0)
         self.row = row
         self.column = column 
-        # Get map
         self.map = [[0 for i in range(column)] for j in range(row)]
         self.generate_map()
         self.F = [[0] * self.column for _ in range(self.row)]
         self.path = [[[(0, 0)] for i in range(column)] for j in range(row)]
                     
     def solve(self):
-        for i in range(1, self.row):
-            for j in range(1, self.column):
+        for i in range(0, self.row):
+            for j in range(0, self.column):
                 self.F[i][j] = max(self.F[i - 1][j], self.F[i][j - 1]) + self.map[i][j]
-                if self.F[i][j] == self.F[i][j - 1] + self.map[i][j]:
+                if j > 0 and self.F[i][j] == self.F[i][j - 1] + self.map[i][j]:
                     self.path[i][j] = []
                     for x in self.path[i][j - 1]:
                         self.path[i][j].append(x)
                     self.path[i][j].append((i, j - 1))
-                else:
+                elif i > 0:
                     self.path[i][j] = []
                     for x in self.path[i - 1][j]:
                         self.path[i][j].append(x)
                     self.path[i][j].append((i - 1, j))
-        print(self.F)
-        print(self.path[-1][-1])
+        self.path[self.row - 1][self.column - 1].append((self.row - 1, self.column - 1))
+        #print(self.F)
+        #print(self.path[-1][-1])
         return self.F[-1][-1]
 
     def generate_map(self):
